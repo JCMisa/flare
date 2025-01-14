@@ -23,7 +23,7 @@ model User {
   image String?
   location String?
   website String?
-  createdAt DateTime @default(now()) // member since 2020
+  createdAt DateTime @default(now()) // member since 2025
   updatedAt DateTime @updatedAt
 
   // Relations: 
@@ -63,7 +63,7 @@ model Comment{
   createdAt DateTime @default(now())
 
   // Relations
-  author User @relation(fields: [authorId],references: [id],onDelete: Cascade)
+  author User @relation(fields: [authorId],references: [id],onDelete: Cascade) // many-to-one
   post Post @relation(fields: [postId],references: [id], onDelete: Cascade)
   notifications Notification[]
 
