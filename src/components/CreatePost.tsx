@@ -1,18 +1,18 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "./ui/card";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Textarea } from "./ui/textarea";
-import { Button } from "./ui/button";
 import { ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
+import { Button } from "./ui/button";
 import { createPost } from "@/actions/post.action";
 import toast from "react-hot-toast";
+import ImageUpload from "./ImageUpload";
 
-const CreatePost = () => {
+function CreatePost() {
   const { user } = useUser();
-
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isPosting, setIsPosting] = useState(false);
@@ -24,8 +24,8 @@ const CreatePost = () => {
     setIsPosting(true);
     try {
       const result = await createPost(content, imageUrl);
-      if (result.success) {
-        // reset the fields
+      if (result?.success) {
+        // reset the form
         setContent("");
         setImageUrl("");
         setShowImageUpload(false);
@@ -33,8 +33,8 @@ const CreatePost = () => {
         toast.success("Post created successfully");
       }
     } catch (error) {
-      toast.error("Failed to create post. Please try again later.");
-      console.log("Failed to create post: ", error);
+      console.error("Failed to create post:", error);
+      toast.error("Failed to create post");
     } finally {
       setIsPosting(false);
     }
@@ -57,7 +57,7 @@ const CreatePost = () => {
             />
           </div>
 
-          {/* {(showImageUpload || imageUrl) && (
+          {(showImageUpload || imageUrl) && (
             <div className="border rounded-lg p-4">
               <ImageUpload
                 endpoint="postImage"
@@ -68,7 +68,7 @@ const CreatePost = () => {
                 }}
               />
             </div>
-          )} */}
+          )}
 
           <div className="flex items-center justify-between border-t pt-4">
             <div className="flex space-x-2">
@@ -106,6 +106,5 @@ const CreatePost = () => {
       </CardContent>
     </Card>
   );
-};
-
+}
 export default CreatePost;
