@@ -15,11 +15,12 @@ function CreatePost() {
   const { user } = useUser();
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [hasImage, setHasImage] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
   const [showImageUpload, setShowImageUpload] = useState(false);
 
   const handleSubmit = async () => {
-    if (!content.trim() && !imageUrl) return;
+    if (!content.trim() && hasImage === false) return;
 
     setIsPosting(true);
     try {
@@ -63,8 +64,8 @@ function CreatePost() {
                 endpoint="postImage"
                 value={imageUrl}
                 onChange={(url) => {
+                  !url ? setShowImageUpload(false) : setHasImage(true);
                   setImageUrl(url);
-                  if (!url) setShowImageUpload(false);
                 }}
               />
             </div>
@@ -87,7 +88,7 @@ function CreatePost() {
             <Button
               className="flex items-center"
               onClick={handleSubmit}
-              disabled={(!content.trim() && !imageUrl) || isPosting}
+              disabled={(!content.trim() && hasImage === false) || isPosting}
             >
               {isPosting ? (
                 <>
