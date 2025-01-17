@@ -82,7 +82,7 @@ export async function toggleLike(postId: string) {
     const userId = await getDbUserId();
     if (!userId) return;
 
-    // check if like exists
+    // check if like exists - if user already like the post
     const existingLike = await prisma.like.findUnique({
       where: {
         userId_postId: {
